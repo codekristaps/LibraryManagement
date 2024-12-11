@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace LibraryManagement.API.Models.Domain
 {
@@ -7,6 +8,8 @@ namespace LibraryManagement.API.Models.Domain
         [Key]
         public Guid AuthorId { get; set; }
         public string Name { get; set; }
-        public ICollection<Book> Books { get; set; } // Navigation Property
+
+        // Optional: You can still include books for viewing purposes
+        public ICollection<Book>? Books { get; set; }
     }
 }

@@ -9,8 +9,9 @@ namespace LibraryManagement.API.Models.Domain
         public string Title { get; set; }
         public string ISBN { get; set; }
         public int PublishedYear { get; set; }
-        public Guid AuthorId { get; set; } // FK to Author
-        public bool IsAvailable { get; set; } // To track availability
-        public Author Author { get; set; } // Navigation Property
+        public Guid AuthorId { get; set; }
+
+        // Navigation property for author
+        public Author? Author { get; set; }
     }
 }
