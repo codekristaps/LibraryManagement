@@ -17,6 +17,23 @@ namespace LibraryManagement.API.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        {
+            return await _dbContext.Books.ToListAsync();
+        }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book>> GetBook(Guid id)
+        {
+            var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.BookId == id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(book);
+        }
     }
 }
