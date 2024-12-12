@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace LibraryManagement.API.Models.Domain
+namespace LibraryManagement.API.Models
 {
     public class Author
     {

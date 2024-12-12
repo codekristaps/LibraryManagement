@@ -1,5 +1,5 @@
 ﻿using LibraryManagement.API.Data;
-using LibraryManagement.API.Models.Domain;
+using LibraryManagement.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
