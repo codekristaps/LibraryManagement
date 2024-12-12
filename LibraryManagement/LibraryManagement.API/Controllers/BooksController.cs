@@ -35,5 +35,43 @@ namespace LibraryManagement.API.Controllers
 
             return Ok(book);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateBook([FromBody] Book book)
+        {
+            book.BookId = Guid.NewGuid();
+            _dbContext.Books.Add(book);
+            await _dbContext.SaveChangesAsync();
+            return Ok(book);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBook(Guid id, [FromBody] Book book)
+        {
+            if (id != book.BookId)
+            {
+                return BadRequest();
+            }
+
+            _dbContext.Entry(book).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(Guid id)
+        {
+            var book = await _dbContext.Books.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Books.Remove(book);
+            await _dbContext.SaveChangesAsync();
+
+            return NoContent();
+        }
     }
 }
