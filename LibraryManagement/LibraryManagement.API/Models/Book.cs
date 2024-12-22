@@ -6,8 +6,12 @@ namespace LibraryManagement.API.Models
     {
         [Key]
         public Guid BookId { get; set; }
+        [Required]
         public string Title { get; set; }
+        [Required]
+        [MaxLength(20)]
         public string ISBN { get; set; }
+        [Required]
         public int PublishedYear { get; set; }
         public Guid AuthorId { get; set; }
 

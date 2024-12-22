@@ -7,6 +7,7 @@ namespace LibraryManagement.API.Models
     {
         [Key]
         public Guid AuthorId { get; set; }
+        [Required]
         public string Name { get; set; }
 
         // Optional: You can still include books for viewing purposes

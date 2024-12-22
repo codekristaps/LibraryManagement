@@ -18,13 +18,14 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
+        public async Task<IActionResult> GetAuthors()
         {
-            return await _dbContext.Authors.ToListAsync();
+            var authors =  await _dbContext.Authors.ToListAsync();
+            return Ok(authors);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetAuthor(Guid id)
+        public async Task<IActionResult> GetAuthor(Guid id)
         {
             var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.AuthorId == id);
 
@@ -37,7 +38,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAuthor([FromBody] Author author)
+        public async Task<IActionResult> CreateAuthor(Author author)
         {
             author.AuthorId = Guid.NewGuid();
             _dbContext.Authors.Add(author);
@@ -46,7 +47,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAuthor(Guid id, [FromBody] Author author)
+        public async Task<IActionResult> UpdateAuthor(Guid id, Author author)
         {
             if (id != author.AuthorId)
             {

@@ -18,13 +18,14 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        public async Task<IActionResult> GetBooks()
         {
-            return await _dbContext.Books.ToListAsync();
+            var books = await _dbContext.Books.ToListAsync();
+            return Ok(books);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(Guid id)
+        public async Task<IActionResult> GetBook(Guid id)
         {
             var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.BookId == id);
 
@@ -37,7 +38,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBook([FromBody] Book book)
+        public async Task<IActionResult> CreateBook(Book book)
         {
             book.BookId = Guid.NewGuid();
             _dbContext.Books.Add(book);
@@ -46,7 +47,7 @@ namespace LibraryManagement.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBook(Guid id, [FromBody] Book book)
+        public async Task<IActionResult> UpdateBook(Guid id, Book book)
         {
             if (id != book.BookId)
             {
