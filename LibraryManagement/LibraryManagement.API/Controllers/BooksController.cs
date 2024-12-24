@@ -40,24 +40,34 @@ namespace LibraryManagement.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBook(Book book)
         {
-            book.BookId = Guid.NewGuid();
-            _dbContext.Books.Add(book);
-            await _dbContext.SaveChangesAsync();
-            return Ok(book);
+            if (ModelState.IsValid)
+            {
+                book.BookId = Guid.NewGuid();
+                _dbContext.Books.Add(book);
+                await _dbContext.SaveChangesAsync();
+                return Ok(book);
+            }
+
+            return BadRequest(ModelState);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(Guid id, Book book)
         {
-            if (id != book.BookId)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
+                if (id != book.BookId)
+                {
+                    return BadRequest();
+                }
+
+                _dbContext.Entry(book).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+
+                return NoContent();
             }
 
-            _dbContext.Entry(book).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
-
-            return NoContent();
+            return BadRequest(ModelState);
         }
 
         [HttpDelete("{id}")]

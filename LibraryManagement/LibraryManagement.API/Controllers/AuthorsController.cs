@@ -20,13 +20,14 @@ namespace LibraryManagement.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAuthors()
         {
-            var authors =  await _dbContext.Authors.ToListAsync();
+            var authors = await _dbContext.Authors.ToListAsync();
             return Ok(authors);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAuthor(Guid id)
         {
+
             var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.AuthorId == id);
 
             if (author == null)
@@ -40,24 +41,34 @@ namespace LibraryManagement.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAuthor(Author author)
         {
-            author.AuthorId = Guid.NewGuid();
-            _dbContext.Authors.Add(author);
-            await _dbContext.SaveChangesAsync();
-            return Ok(author);
+            if (ModelState.IsValid)
+            {
+                author.AuthorId = Guid.NewGuid();
+                _dbContext.Authors.Add(author);
+                await _dbContext.SaveChangesAsync();
+                return Ok(author);
+            }
+
+            return BadRequest(ModelState);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuthor(Guid id, Author author)
         {
-            if (id != author.AuthorId)
+            if (ModelState.IsValid)
             {
-                return BadRequest();
+                if (id != author.AuthorId)
+                {
+                    return BadRequest();
+                }
+
+                _dbContext.Update(author);
+                await _dbContext.SaveChangesAsync();
+
+                return Ok(author);
             }
 
-            _dbContext.Update(author);
-            await _dbContext.SaveChangesAsync();
-
-            return Ok(author);
+            return BadRequest(ModelState);
         }
 
         [HttpDelete("{id}")]
